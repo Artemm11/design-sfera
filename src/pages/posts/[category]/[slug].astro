@@ -103,23 +103,21 @@ const embedVideoUrl = getEmbedUrl(post.data.videoUrl);
     </div>
   </nav>
 
-  <main class="container" style="margin-top: 2rem;">
-    <!-- Breadcrumbs -->
-    <nav class="breadcrumbs">
-      <a href="/">Главная</a>
-      <span class="breadcrumbs-separator">/</span>
-      <a href={`/#${post.data.category}`}>{categoryName}</a>
-      <span class="breadcrumbs-separator">/</span>
-      <span style="color: var(--text-primary); font-weight: 500;">{post.data.title}</span>
-    </nav>
+  <main class="container">
+    <div class="article-container-centered" style="margin-top: 3rem; margin-bottom: 5rem;">
+      <!-- Breadcrumbs -->
+      <nav class="breadcrumbs">
+        <a href="/">Главная</a>
+        <span class="breadcrumbs-separator">/</span>
+        <a href={`/#${post.data.category}`}>{categoryName}</a>
+        <span class="breadcrumbs-separator">/</span>
+        <span style="color: var(--text-primary); font-weight: 500;">{post.data.title}</span>
+      </nav>
 
-    <!-- Two-column content layout -->
-    <div class="article-layout">
-      <!-- Left Column: Article Content -->
       <article>
         <!-- Article Header -->
         <header class="article-header" style="padding: 0 0 2rem;">
-          <h1 class="article-title" style="margin: 0.5rem 0 1rem; line-height: 1.2;">{post.data.title}</h1>
+          <h1 class="article-title" style="margin: 0.5rem 0 1rem; line-height: 1.2; font-size: 3rem;">{post.data.title}</h1>
           <div class="article-meta" style="border-bottom: 1px solid var(--border-color); padding-bottom: 1.5rem;">
             <span class={`badge badge-${post.data.category}`} style="margin-right: 1rem;">
               {categoryName}
@@ -136,6 +134,14 @@ const embedVideoUrl = getEmbedUrl(post.data.videoUrl);
             <img src={post.data.coverImage} alt={post.data.title} class="article-cover-main" />
           </div>
         )}
+
+        <!-- Inline Table of Contents Box -->
+        <div class="toc-box-inline" id="toc-widget">
+          <h3 class="toc-box-title">Содержание:</h3>
+          <ul class="toc-list-inline" id="toc-list">
+            <!-- Dynamically populated by client script -->
+          </ul>
+        </div>
 
         <!-- Article Body -->
         <section class="article-body">
@@ -181,50 +187,46 @@ const embedVideoUrl = getEmbedUrl(post.data.videoUrl);
             </div>
           )}
         </section>
+
+        <!-- CTA Banner (full width inline) -->
+        {settings.sidebarBannerTitle && (
+          <div class="article-cta-banner">
+            <div class="article-cta-banner-content">
+              <h3 class="article-cta-banner-title">{settings.sidebarBannerTitle}</h3>
+              <p class="article-cta-banner-text">{settings.sidebarBannerText}</p>
+            </div>
+            <button class="btn-cta btn-trigger-estimate" type="button" style="width: auto; white-space: nowrap; padding: 0.8rem 2rem;">
+              {settings.sidebarBannerButtonText}
+            </button>
+          </div>
+        )}
       </article>
 
-      <!-- Right Column: Sidebar -->
-      <aside class="sidebar">
-        <div class="sidebar-sticky">
-          <!-- Widget 1: TOC -->
-          <div class="widget" id="toc-widget">
-            <h3 class="widget-title">Содержание</h3>
-            <ul class="toc-list" id="toc-list">
-              <!-- Dynamically populated by client script below -->
-            </ul>
+      <!-- Related Posts (Grid at bottom) -->
+      {relatedPosts.length > 0 && (
+        <div class="related-posts-section" style="border-top: 1px solid var(--border-color); margin-top: 4rem; padding-top: 3rem;">
+          <h3 style="font-family: var(--font-title); font-size: 1.8rem; margin-bottom: 2rem; color: var(--text-primary);">Похожие статьи</h3>
+          <div class="related-posts-grid">
+            {relatedPosts.map((rp) => (
+              <a href={`/posts/${rp.data.category}/${rp.slug}`} class="related-card">
+                <div class="related-card-image-link">
+                  {rp.data.coverImage ? (
+                    <img src={rp.data.coverImage} alt={rp.data.title} class="related-card-image" />
+                  ) : (
+                    <div class="related-card-image" style="background: var(--accent-gradient); height: 100%;"></div>
+                  )}
+                </div>
+                <div class="related-card-content">
+                  <span class={`badge badge-${rp.data.category}`} style="font-size: 0.65rem; padding: 0.15rem 0.5rem; margin-bottom: 0.5rem; width: fit-content;">
+                    {getCategoryName(rp.data.category)}
+                  </span>
+                  <h4 class="related-card-title">{rp.data.title}</h4>
+                </div>
+              </a>
+            ))}
           </div>
-
-          <!-- Widget 2: CTA Banner (Blueprint style) -->
-          {settings.sidebarBannerTitle && (
-            <div class="widget widget-cta">
-              <h3 class="widget-cta-title">{settings.sidebarBannerTitle}</h3>
-              <p class="widget-cta-text">{settings.sidebarBannerText}</p>
-              <button class="btn-cta btn-trigger-estimate" type="button">
-                {settings.sidebarBannerButtonText}
-              </button>
-            </div>
-          )}
-
-          <!-- Widget 3: Related Posts -->
-          {relatedPosts.length > 0 && (
-            <div class="widget">
-              <h3 class="widget-title">Похожие статьи</h3>
-              <div class="related-list">
-                {relatedPosts.map((rp) => (
-                  <a href={`/posts/${rp.data.category}/${rp.slug}`} class="related-item">
-                    {rp.data.coverImage ? (
-                      <img src={rp.data.coverImage} alt={rp.data.title} class="related-thumb" />
-                    ) : (
-                      <div class="related-thumb" style="background: linear-gradient(135deg, hsl(263, 60%, 20%) 0%, hsl(190, 60%, 20%) 100%);"></div>
-                    )}
-                    <span class="related-title">{rp.data.title}</span>
-                  </a>
-                ))}
-              </div>
-            </div>
-          )}
         </div>
-      </aside>
+      )}
     </div>
   </main>
 
@@ -321,7 +323,7 @@ const embedVideoUrl = getEmbedUrl(post.data.videoUrl);
     </div>
   </footer>
 
-  <!-- Client-side script for dynamic Table of Contents, active highlight, and estimate modal -->
+  <!-- Client-side script for dynamic Table of Contents and estimate modal -->
   <script>
     // 1. Table of Contents generation
     const headings = document.querySelectorAll('.article-body h2, .article-body h3');
@@ -345,31 +347,6 @@ const embedVideoUrl = getEmbedUrl(post.data.videoUrl);
         li.appendChild(a);
         tocList.appendChild(li);
       });
-
-      // Highlight active toc link on scroll
-      const tocLinks = document.querySelectorAll('.toc-link');
-      const observerOptions = {
-        root: null,
-        rootMargin: '0px 0px -70% 0px', // detects when headers hit top 30% of window
-        threshold: 0.1
-      };
-
-      const observer = new IntersectionObserver((entries) => {
-        entries.forEach(entry => {
-          if (entry.isIntersecting) {
-            const id = entry.target.id;
-            tocLinks.forEach(link => {
-              if (link.getAttribute('href') === `#${id}`) {
-                link.classList.add('active');
-              } else {
-                link.classList.remove('active');
-              }
-            });
-          }
-        });
-      }, observerOptions);
-
-      headings.forEach(heading => observer.observe(heading));
     } else {
       // Hide TOC widget if no H2 or H3 headers are present in the text
       const tocWidget = document.getElementById('toc-widget');
