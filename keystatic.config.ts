@@ -11,7 +11,7 @@ export default config({
         kind: 'local',
       },
   cloud: {
-    project: 'test3/astro-keystatic-blog',
+    project: 'artemm11/design-sfera',
   },
   collections: {
     categories: collection({
