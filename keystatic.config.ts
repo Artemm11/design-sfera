@@ -11,7 +11,7 @@ export default config({
         kind: 'local',
       },
   cloud: {
-    project: 'artemm11/design-sfera',
+    project: 'sovet-stroitelya/design-sfera',
   },
   collections: {
     categories: collection({
