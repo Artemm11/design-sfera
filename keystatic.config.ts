@@ -118,11 +118,11 @@ export default config({
       path: 'src/content/settings/index',
       format: { data: 'json' },
       schema: {
-        siteName: fields.text({ label: 'Название сайта', defaultValue: 'МастерБлог' }),
+        siteName: fields.text({ label: 'Название сайта', defaultValue: 'Совет Строителя' }),
         siteDescription: fields.text({
           label: 'Описание сайта (для SEO)',
           multiline: true,
-          defaultValue: 'Информационный портал со статьями о строительстве, ремонте, сантехнике и дизайне.'
+          defaultValue: 'Полезные советы и статьи о строительстве, ремонте, дизайне интерьеров и выборе материалов.'
         }),
         telegramBotToken: fields.text({
           label: 'Токен Telegram-бота (для заявок)',
